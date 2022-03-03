@@ -1,0 +1,22 @@
+#!/bin/sh
+
+# running on alpine with python image
+# shuttlecloud/python:3.8-alpine3.11
+
+set -xe
+
+. /venv/bin/activate
+# It is needed to intall py-dev since we need Python.h file: 
+# https://stackoverflow.com/questions/8282231/i-have-python-on-my-ubuntu-system-but-gcc-cant-find-python-h
+apk add --no-cache wget g++ gcc make python3-dev
+cd /usr/local
+# https://www.linuxfromscratch.org/blfs/view/cvs/general/libxml2.html
+wget ftp://xmlsoft.org/libxml2/libxml2-2.9.10.tar.gz
+tar -zxf  libxml2-2.9.10.tar.gz
+cd libxml2-2.9.10
+
+# Installation guidelines: 
+# https://gitlab.gnome.org/GNOME/libxml2/-/blob/v2.9.10/README
+./configure --prefix=/usr/local
+make
+make install
